@@ -8,7 +8,7 @@ const page = async () => {
   return (
     <div className="container flex py-6">
       <Sort />
-      <Products data={res.data} />
+      <Products data={res.data!} />
     </div>
   );
 };

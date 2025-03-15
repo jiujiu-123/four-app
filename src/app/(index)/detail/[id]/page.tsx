@@ -11,6 +11,9 @@ interface PageProps {
 // 做详情页的SSG
 export const generateStaticParams = async () => {
   const res = await productsAction();
+  if (!res.data) {
+    return [];
+  }
   return res.data.map((item) => ({
     id: item.id.toString(),
   }));
@@ -20,6 +23,14 @@ const Page = async (props: PageProps) => {
   // 地址栏param参数
   const { id } = await props.params;
   const { data: product } = await productAction(Number(id));
+
+  if (!product) {
+    return (
+      <div>
+        <p>Not Found Cart</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container flex py-6">

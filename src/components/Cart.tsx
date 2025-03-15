@@ -9,7 +9,12 @@ import { Button } from './ui/button';
 import { CartStore } from '@/store/CartStore';
 import { useShallow } from 'zustand/shallow';
 
-const Cart = () => {
+interface cartType {
+  status: number;
+}
+
+const Cart = (props: cartType) => {
+  const { status } = props;
   const { cartList, updateQuantity, removeFromCart } = CartStore(
     useShallow((state) => {
       return {
@@ -19,7 +24,6 @@ const Cart = () => {
       };
     })
   );
-  console.log(cartList);
   const quantityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const handleClick = (value: number) => {
     removeFromCart(value);
@@ -108,9 +112,18 @@ const Cart = () => {
             <p className="text-2xl font-bold text-red-400 mb-6">
               ${cartList.reduce((pre, cur) => pre + Number(cur.product.price * cur.quantity), 0)}
             </p>
-            <Link href="/checkout">
-              <Button className="w-full cursor-pointer">Checkout</Button>
-            </Link>
+            {status === 200 ? (
+              <Link href="/checkout">
+                <Button className="w-full cursor-pointer">Checkout</Button>
+              </Link>
+            ) : (
+              <>
+                <Link href="/account">
+                  <Button className="w-full cursor-pointer">Login</Button>
+                </Link>
+                <p>You need to Login to checkout</p>
+              </>
+            )}
           </div>
         </div>
       ) : (

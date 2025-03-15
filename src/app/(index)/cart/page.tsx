@@ -1,9 +1,11 @@
+import { authAction } from '@/actions/users';
 import Cart from '@/components/Cart';
 
-const page = () => {
+const page = async () => {
+  const res = await authAction();
   return (
     <div>
-      <Cart />
+      <Cart status={res.status} />
     </div>
   );
 };
